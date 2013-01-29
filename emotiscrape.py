@@ -84,19 +84,20 @@ class Emotiscrape:
         key = 'contains(%s)' % word
         return {key: True}
 
-
+    #
+    # The exposed method
+    #
     def analyze_string(self, my_string):
-       
         o = self.classifier.prob_classify(self.document_features(my_string))
         pos_score = o.prob("pos")
         neg_score = o.prob("neg")
-
+        
         classification = self.classifier.classify(self.document_features(my_string))
 
         if pos_score >= neg_score:
             score = pos_score * 100
         else:
-             score = neg_score * -100
+            score = neg_score * 100
         
         return [score, classification, my_string]
 
@@ -135,20 +136,4 @@ if __name__ == "__main__":
        # print "neg", o.prob("neg")
        # print "pos", o.prob("pos")
         
-        print "(%s) %s | %s" % (score, emo.classifier.classify(emo.document_features(sample)), sample)
-        
-        
-# ?
-# training_set = nltk.classify.apply_features(extract_features, tweets)
-
-    
-
-
-
-
-
-
-
-
-
-
+        print "(%s) [%s, %s] %s | %s" % (score, o.prob("pos"), o.prob("neg"), emo.classifier.classify(emo.document_features(sample)), sample)

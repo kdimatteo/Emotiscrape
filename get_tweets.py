@@ -44,15 +44,15 @@ class GetTweets():
                 ID_list = sorted(ID_list, reverse=True)
                 self.lastID = ID_list[0]
                 
-                print "%s logged %s ending at id %s" % (hash_tag, len(L), self.lastID)
+                print "[GetTweets] %s logged %s messages. End id: %s" % (hash_tag, len(L), self.lastID)
                 #ok done with this function
                 return "".join(L).encode("utf-8")
             else:
-                print "not enuff %s %s" % (hash_tag, len(L))
+                print "[GetTweets] not enuff messages for %s. Length only %s" % (hash_tag, len(L))
                 return False
             
         except:
-            print "fail %s " % u
+            print "[GetTweets] Todo: Failure message here. %s " % u
             return False
         
     def cleanup_tweet(self, s, term):

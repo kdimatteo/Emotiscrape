@@ -96,10 +96,17 @@ class Emotiscrape:
 
         if pos_score >= neg_score:
             score = pos_score * 100
+            probability_delta = pos_score - neg_score
         else:
             score = neg_score * 100
-        
-        return [score, classification, my_string]
+            probability_delta = neg_score - pos_score
+
+        o = {"probability_pos":pos_score, 
+                "probability_neg":neg_score, 
+                "probability_delta":probability_delta, 
+                "classification":classification, 
+                "original_text":my_string}
+        return o
 
 
 
@@ -107,33 +114,28 @@ if __name__ == "__main__":
 
     emo = Emotiscrape()
 
-    print "TEST MODE"
+    print "---------\nTEST MODE\n---------"
    
     
     test_samples = [
-        'i love you harry!',
-        'This is incredibly annoying, i hate working here and i hate this app',
-        'You are a terrible person and everything you do is bad',
-        'I love you all and you make me happy',
-        'I frown whenever I see you in a poor state of mind',
-        'Finally getting rich from my ideas. They make me smile.',
-        'My mommy is poor',
-        'I love butterflies. Yay for happy',
-        'Everything is fail today and I hate stuff',
-        'Larry is my friend, but boy is he shady',
+        ("pos", "i love you harry!"),
+        ("neg", "This is incredibly annoying, i hate working here and i hate this crummy application"),
+        ("neg", "You are a terrible person and everything you do is bad."),
+        ("pos", "I love you all and you make me happy"),
+        ("neg", "I frown whenever I see you in a poor state of mind"),
+        ("pos", "Finally getting rich from my ideas. They make me smile"),
+        ("neg", "My mommy is poor"),
+        ("pos", "I love butterflies. Yay for happy"),
+        ("neg", "Everything is fail today and I hate stuff"),
+        ("pos", "Larry is my friend, but boy is he shady")
     ]
     
-    for sample in test_samples:
-        o = emo.classifier.prob_classify(emo.document_features(sample))
-        pos_score = o.prob("pos")
-        neg_score = o.prob("neg")
-        
-        if pos_score >= neg_score:
-            score = pos_score * 100
+    for expected_result, sample in test_samples:
+        o = emo.analyze_string(sample)
+        if o.get("classification") == expected_result:
+            status = "\033[92m%s\033[0m" % "pass"
         else:
-             score = neg_score * -100
-             
-       # print "neg", o.prob("neg")
-       # print "pos", o.prob("pos")
+            status = "\033[91m%s\033[0m" % "fail"
+
+        print "[%s] %s : %s \t\t %s" % (status, o.get("classification"), o.get("probability_delta")*100, o.get("original_text"))
         
-        print "(%s) [%s, %s] %s | %s" % (score, o.prob("pos"), o.prob("neg"), emo.classifier.classify(emo.document_features(sample)), sample)

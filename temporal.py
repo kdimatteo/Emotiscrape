@@ -1,6 +1,6 @@
 #!/usr/bin/python
 '''
-get a current bag of words from twitter based on a key word, use a temporal dimension for sentiment.
+get a current bag of words from twitter based on a key word for a value of "current sentiment".
 '''
 
 import emotiscrape
@@ -10,6 +10,6 @@ emo = emotiscrape.Emotiscrape()
 tw = get_tweets.GetTweets()
 
 bag = tw.get_tweets("$NFLX")
-L = emo.analyze_string(bag)
+o = emo.analyze_string(bag)
 
-print "%s, %s probability" % (L[1], L[0])
+print "[Temporal] %s, %s probability" % (o.get("classification"), o.get("probability_delta"))

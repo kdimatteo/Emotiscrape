@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+        <link rel="stylesheet" href="css/normalize.css">
+        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <script src="js/vendor/modernizr-2.6.2.min.js"></script>
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+        <![endif]-->
+
+        <div class="row">
+            <div class="span10 offset3">
+                <h1>Sentiment Analysis Demo</h1>
+                <hr>
+                <div class="row">
+                    <div class="span5">
+                        <p>
+                        Enter some words, the app will tell you how the Twitterverse felt about it. The data used to create the training set is dated Jan 2013. Eventually I will add trend logging.</p> 
+                        <div class="input-append">
+                            <input type="text" class="text" id="q">
+                            <button class="btn" id="btn-submit" class="add-on"><i class="icon-search"></i></button>
+                        </div>
+                    </div>
+                    <div class="span5 hidden" id="results">
+                        <h3>Results</h3>
+                        <div class="well">
+                            <dl class="dl-horizontal">
+                                <dt>Term</dt>
+                                <dd id="term"></dd>
+                                <dt>Setiment</dt>
+                                <dd id="classification"></dd>
+                                <dt>Probability</dt>
+                                <dd><span id="probability"></span>&nbsp;<span class="muted">(1 is absolute, 0.5 not classed)</span></dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="span10 offset3">
+                <hr class="soften">
+                Demo implementation of <a href="https://github.com/kdimatteo/Emotiscrape">Emotiscrape</a>.
+            </div>
+        </div>
+
+    
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+        <script src="js/vendor/underscore-min.js"></script>
+        <script src="js/vendor/backbone.js"></script>
+        <script src="js/plugins.js"></script>
+        <script src="js/main.js"></script>
+
+        <script>
+            var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+            (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+            g.src='//www.google-analytics.com/ga.js';
+            s.parentNode.insertBefore(g,s)}(document,'script'));
+        </script>
+    </body>
+</html>

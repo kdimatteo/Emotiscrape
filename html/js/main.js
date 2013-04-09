@@ -4,11 +4,13 @@ $(document).ready(function(){
 	// manually bind the click event
 	$("#btn-submit").on("click", function(){
 		window.location = "#term/" + $("#q").val();
+		$("#loading").removeClass("hidden");
 	});
 
 	$('#q').bind('keypress', function(e) {
 		if((e.keyCode || e.which) === 13){
 			window.location = "#term/" + $("#q").val();
+			$("#loading").removeClass("hidden");
 		}
 	});
 
@@ -39,7 +41,7 @@ $(document).ready(function(){
 
 			$("#probability-delta").html(this.model.get("probability_delta"));
 
-
+			$("#loading").addClass("hidden");
 			$("#results").removeClass("hidden");
 		}
 	});

@@ -10,11 +10,9 @@ class GetTweets():
 
     def __init__(self, term, outfile):
         
-
+        #from venv vars
         CONSUMER_KEY = os.environ['CONSUMER_KEY']
         CONSUMER_SECRET = os.environ['CONSUMER_SECRET']
-
-
 
         file = open(outfile, 'a')
 
@@ -79,8 +77,6 @@ class GetTweets():
 
 
 if __name__ == "__main__":
-    # run forever
-    while 1:
-        o = GetTweets(':)', "output/good.txt")
-        #p = GetTweets(':(', "output/bad.txt")
+    o = GetTweets(':)', "output/good.txt")
+    #p = GetTweets(':(', "output/bad.txt")
 

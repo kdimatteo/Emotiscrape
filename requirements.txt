@@ -1,7 +1,12 @@
 Flask==0.9
 Jinja2==2.6
 PyYAML==3.10
+TwitterSearch==0.78.4
 Werkzeug==0.8.3
 distribute==0.6.28
 nltk==2.0.4
+oauthlib==0.6.1
+requests==2.2.0
+requests-oauthlib==0.4.0
+twitter==1.10.2
 wsgiref==0.1.2

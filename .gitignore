@@ -1,4 +1,7 @@
+.app_credentials
 *.DS_Store
 venv/*
 *_old*
 *.pyc
+output/*
+build/*

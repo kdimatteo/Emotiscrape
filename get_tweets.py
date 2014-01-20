@@ -1,60 +1,61 @@
-#!/usr/bin/python
+#!/user/bin/python
 
-'''
-Script to pull tweets to create sentiment dimensions.
-
-'''
-
+import os
 import fileinput
-import json
 import re
-import urllib
-import urllib2
-import time
+from twitter import *
+from TwitterSearch import *
 
 class GetTweets():
-    
-    def __init__(self):
-        self.lastID = 0
 
-    def get_and_write_tweets(self, term, filename):
-        content = self.get_tweets(term, since_id=self.lastID)
-        if(content):
-            file = open(filename, 'a')
-            file.write(content)
-            file.close()
+    def __init__(self, term, outfile):
         
-        
-    def get_tweets(self, hash_tag, page=1, rpp=100, since_id=0):
-        u = 'http://search.twitter.com/search.json?lang=en&since_id=%s&rpp=%s&page=%s&result_type=recent&q=%s' % (str(since_id), str(rpp), str(page), urllib.quote_plus(hash_tag))
-        ID_list = []
-        
+
+        CONSUMER_KEY = os.environ['CONSUMER_KEY']
+        CONSUMER_SECRET = os.environ['CONSUMER_SECRET']
+
+
+
+        file = open(outfile, 'a')
+
         try:
-            result = urllib2.urlopen(u)
-            o = json.loads(result.read())
-            content = ""
-            L = []
-            for tweet in o['results']:
-                myTweet = self.cleanup_tweet(tweet['text'], hash_tag)
-                L.append(myTweet) 
-                ID_list.append(tweet['id'])
-            
-            if(len(L) == 100):
-                #get the last ID,
-                ID_list = sorted(ID_list, reverse=True)
-                self.lastID = ID_list[0]
-                
-                print "[GetTweets] %s logged %s messages. End id: %s" % (hash_tag, len(L), self.lastID)
-                #ok done with this function
-                return "".join(L).encode("utf-8")
-            else:
-                print "[GetTweets] not enuff messages for %s. Length only %s" % (hash_tag, len(L))
-                return False
-            
-        except:
-            print "[GetTweets] Todo: Failure message here. %s " % u
-            return False
-        
+            tso = TwitterSearchOrder() 
+            tso.setKeywords([term])
+            tso.setLanguage('en')
+            tso.setCount(99) 
+            tso.setIncludeEntities(False) # don't give us all those entity information
+
+            MY_TWITTER_CREDS = os.path.expanduser('.app_credentials')
+
+            if not os.path.exists(MY_TWITTER_CREDS):
+                oauth_dance("emotiscrape", CONSUMER_KEY, CONSUMER_SECRET, MY_TWITTER_CREDS)
+
+            oauth_token, oauth_secret = read_token_file(MY_TWITTER_CREDS)
+
+
+            t = TwitterSearch(
+                consumer_key = CONSUMER_KEY,
+                consumer_secret = CONSUMER_SECRET,
+                access_token = oauth_token,
+                access_token_secret = oauth_secret
+            )
+
+
+            for tweet in t.searchTweetsIterable(tso): # this is where the fun actually starts :)
+                cleanTweet = self.cleanup_tweet(tweet['text'], term).encode('utf-8')
+                file.write(cleanTweet)
+                #print cleanTweet
+                #print tweet['created_at'] , '\t',  tweet['text']
+                #print( '@%s tweeted: %s' % ( tweet['user']['screen_name'], tweet['text'] ) )
+                print "pulled 99 tweets for %s, until %s [%s]" % (term, tweet['created_at'], tweet['id'])
+
+        except TwitterSearchException as e: 
+            # take care of all those ugly errors if there are some
+            print(e)
+
+
+
+
     def cleanup_tweet(self, s, term):
        
         # drop links
@@ -76,11 +77,10 @@ class GetTweets():
         return s.strip()
 
 
+
 if __name__ == "__main__":
-    ## run
+    # run forever
     while 1:
-        o = GetTweets()
-        o.get_and_write_tweets(':)', 'output/good.txt')
-        p = GetTweets()
-        p.get_and_write_tweets(':(', 'output/bad.txt')
-        time.sleep(5)
+        o = GetTweets(':)', "output/good.txt")
+        #p = GetTweets(':(', "output/bad.txt")
+

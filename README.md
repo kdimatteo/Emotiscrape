@@ -52,3 +52,4 @@ Todo
 ----
 
 + move prints to log()
++ use ftfy to clean up text input

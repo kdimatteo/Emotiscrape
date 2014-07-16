@@ -21,7 +21,7 @@ o = emo.analyze_string("$AAPL")
 print o.keys()
 
 #yields:
-["probability_pos", "probability_neg", "probability_delta", "classification", "original_text"}
+{"probability_pos", "probability_neg", "probability_delta", "classification", "original_text"}
 
 ```
 
